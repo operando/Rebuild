@@ -1,6 +1,9 @@
 package com.os.operando.rebuildfm
 
 import android.util.Log
+import androidx.compose.runtime.mutableStateListOf
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prof.rssparser.Parser
@@ -20,13 +23,17 @@ class MainViewModel : ViewModel() {
         OkHttpClient()
     }
 
+    private val _episodes = MutableLiveData<MutableList<String>>(mutableStateListOf())
+    val episodes: LiveData<MutableList<String>> = _episodes
+
     fun get() {
         viewModelScope.launch {
             try {
                 val channel = parser.getChannel(url)
                 Log.d("test", channel.articles.first().toString())
-                parse()
-
+                val podcast = parse()
+                _episodes.value?.addAll(podcast.episodes.map { it.title })
+                _episodes.postValue(episodes.value)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
