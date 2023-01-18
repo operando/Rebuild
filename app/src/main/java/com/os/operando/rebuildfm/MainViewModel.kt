@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.prof.rssparser.Parser
 import dev.stalla.PodcastRssParser
+import dev.stalla.model.Episode
 import dev.stalla.model.Podcast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,8 +24,8 @@ class MainViewModel : ViewModel() {
         OkHttpClient()
     }
 
-    private val _episodes = MutableLiveData<MutableList<String>>(mutableStateListOf())
-    val episodes: LiveData<MutableList<String>> = _episodes
+    private val _episodes = MutableLiveData<MutableList<Episode>>(mutableStateListOf())
+    val episodes: LiveData<MutableList<Episode>> = _episodes
 
     fun get() {
         viewModelScope.launch {
@@ -32,7 +33,7 @@ class MainViewModel : ViewModel() {
                 val channel = parser.getChannel(url)
                 Log.d("test", channel.articles.first().toString())
                 val podcast = parse()
-                _episodes.value?.addAll(podcast.episodes.map { it.title })
+                _episodes.value?.addAll(podcast.episodes)
                 _episodes.postValue(episodes.value)
             } catch (e: Exception) {
                 e.printStackTrace()
