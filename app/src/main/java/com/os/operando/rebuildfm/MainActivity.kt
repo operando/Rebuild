@@ -67,6 +67,8 @@ fun List1(viewModel: MainViewModel) {
                     Text(text = episode.title)
                     Spacer(modifier = Modifier.heightIn(8.dp))
                     Text(text = episode.itunes?.subtitle ?: "")
+                    Spacer(modifier = Modifier.heightIn(4.dp))
+                    Text(text = episode.pubDate.toString())
                 }
             }
         }
