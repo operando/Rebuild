@@ -15,9 +15,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.os.operando.rebuildfm.ui.theme.RebuildfmTheme
 
 class MainActivity : ComponentActivity() {
@@ -29,18 +31,26 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val navController = rememberNavController()
             RebuildfmTheme {
-                // A surface container using the 'background' color from the theme
-                Scaffold(
-                    topBar = {
-                        TopAppBar(
-                            title = { Text("Rebuild.fm") },
-                        )
+                NavHost(navController = navController, startDestination = "screen1") {
+                    composable(route = "screen1") {
+                        Scaffold(
+                            topBar = {
+                                TopAppBar(
+                                    title = { Text("Rebuild.fm") },
+                                )
+                            }
+                        ) {
+                            Column(modifier = Modifier.padding(it)) {
+                                Button(onClick = { navController.navigate(EpisodeDetailNavGraph.episodeDetailRoute) }) {
+                                    Text(text = "Go to Screen 2")
+                                }
+                                List1(viewModel)
+                            }
+                        }
                     }
-                ) {
-                    Column(modifier = Modifier.padding(it)) {
-                        List1(viewModel)
-                    }
+                    episodeDetailNavGraph()
                 }
             }
         }
