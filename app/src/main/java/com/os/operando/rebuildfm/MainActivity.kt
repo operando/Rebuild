@@ -1,5 +1,6 @@
 package com.os.operando.rebuildfm
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.os.operando.rebuildfm.ui.theme.RebuildfmTheme
@@ -22,21 +24,21 @@ class MainActivity : ComponentActivity() {
 
     private val viewModel: MainViewModel by viewModels()
 
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             RebuildfmTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                Scaffold(
+                    topBar = {
+                        TopAppBar(
+                            title = { Text("Rebuild.fm") },
+                        )
+                    }
                 ) {
-                    Column() {
-//                        Button(onClick = {
-//                            viewModel.add()
-//                        }) {
-//                            Text("Add")
-//                        }
+                    Column(modifier = Modifier.padding(it)) {
                         List1(viewModel)
                     }
                 }
