@@ -1,24 +1,12 @@
 package com.os.operando.rebuildfm
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.*
-import androidx.compose.material3.CardDefaults.cardColors
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.os.operando.rebuildfm.ui.theme.RebuildfmTheme
 
@@ -26,64 +14,22 @@ class MainActivity : ComponentActivity() {
 
     private val viewModel: MainViewModel by viewModels()
 
-    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
             RebuildfmTheme {
-                NavHost(navController = navController, startDestination = "screen1") {
-                    composable(route = "screen1") {
-                        Scaffold(
-                            topBar = {
-                                TopAppBar(
-                                    title = { Text("Rebuild.fm") },
-                                )
-                            }
-                        ) {
-                            Column(modifier = Modifier.padding(it)) {
-                                Button(onClick = { navController.navigate(EpisodeDetailNavGraph.episodeDetailRoute) }) {
-                                    Text(text = "Go to Screen 2")
-                                }
-                                List1(viewModel)
-                            }
-                        }
-                    }
+                NavHost(
+                    navController = navController,
+                    startDestination = EpisodeListNavGraph.episodeListRoute
+                ) {
+                    episodeListNavGraph(viewModel, navController)
                     episodeDetailNavGraph()
                 }
             }
         }
 
         viewModel.get()
-    }
-}
-
-@Composable
-fun List1(viewModel: MainViewModel) {
-    val episodes = viewModel.episodes.observeAsState().value
-    LazyColumn {
-        items(items = episodes!!) { episode ->
-            Card(
-                colors = cardColors(Color.White),
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 6.dp,
-                    pressedElevation = 10.dp
-                ),
-                modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-                    .clickable { }
-                    .wrapContentSize()
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(text = episode.title)
-                    Spacer(modifier = Modifier.heightIn(8.dp))
-                    Text(text = episode.itunes?.subtitle ?: "")
-                    Spacer(modifier = Modifier.heightIn(4.dp))
-                    Text(text = episode.pubDate.toString())
-                }
-            }
-        }
     }
 }
 
