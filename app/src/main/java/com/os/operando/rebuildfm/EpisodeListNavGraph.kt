@@ -47,7 +47,13 @@ fun EpisodeList(viewModel: MainViewModel, navController: NavHostController) {
                 ),
                 modifier = Modifier
                     .padding(horizontal = 16.dp, vertical = 8.dp)
-                    .clickable { navController.navigate(EpisodeDetailNavGraph.episodeDetailRoute) }
+                    .clickable {
+                        navController.navigate(
+                            EpisodeDetailNavGraph.episodeDetailRoute(
+                                episode.link ?: ""
+                            )
+                        )
+                    }
                     .wrapContentSize()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
