@@ -6,7 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AddCircle
+import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.*
@@ -31,16 +31,16 @@ class MainActivity : ComponentActivity() {
         val icon: ImageVector,
     )
 
-    val bottomNavItems = listOf(
+    private val bottomNavItems = listOf(
         BottomNavItem(
             name = "Home",
             route = EpisodeListNavGraph.episodeListRoute,
             icon = Icons.Rounded.Home,
         ),
         BottomNavItem(
-            name = "Create",
-            route = "add",
-            icon = Icons.Rounded.AddCircle,
+            name = "Favorite",
+            route = FavoriteNavGraph.favoriteRoute,
+            icon = Icons.Rounded.Favorite,
         ),
         BottomNavItem(
             name = "Settings",
@@ -87,13 +87,12 @@ class MainActivity : ComponentActivity() {
                     ) {
                         episodeListNavGraph(viewModel, navController)
                         episodeDetailNavGraph()
+                        favoriteNavGraph(navController)
                         settingNavGraph(navController)
                     }
                 })
             }
         }
-
-        viewModel.get()
     }
 }
 

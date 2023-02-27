@@ -36,6 +36,7 @@ fun NavGraphBuilder.episodeListNavGraph(
 
 @Composable
 fun EpisodeList(viewModel: MainViewModel, navController: NavHostController) {
+    viewModel.get()
     val episodes = viewModel.episodes.observeAsState().value
     LazyColumn {
         items(items = episodes!!) { episode ->
