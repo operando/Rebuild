@@ -12,13 +12,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 
 @OptIn(ExperimentalMaterial3Api::class)
 fun NavGraphBuilder.episodeListNavGraph(
-    viewModel: MainViewModel,
     navController: NavHostController
 ) {
     composable(route = EpisodeListNavGraph.episodeListRoute) {
@@ -30,14 +30,14 @@ fun NavGraphBuilder.episodeListNavGraph(
             }
         ) {
             Column(modifier = Modifier.padding(it)) {
-                EpisodeList(viewModel, navController)
+                EpisodeList(navController)
             }
         }
     }
 }
 
 @Composable
-fun EpisodeList(viewModel: MainViewModel, navController: NavHostController) {
+fun EpisodeList(navController: NavHostController, viewModel: MainViewModel = hiltViewModel()) {
     viewModel.get()
     val episodes = viewModel.episodes.observeAsState().value
     LazyColumn {

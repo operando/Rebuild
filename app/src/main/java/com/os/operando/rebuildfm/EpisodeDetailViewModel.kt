@@ -8,10 +8,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EpisodeDetailViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
+    private val rssFeedRepository: RssFeedRepository
 ) : ViewModel() {
-
-    private val rssFeedRepository = RssFeedRepository()
     private val _episode = MutableLiveData<Episode?>()
     val episode: LiveData<Episode?> = _episode
     private var episodeId: String = ""

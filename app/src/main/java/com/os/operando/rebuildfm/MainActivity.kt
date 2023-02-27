@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Home
@@ -22,8 +21,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-    private val viewModel: MainViewModel by viewModels()
 
     data class BottomNavItem(
         val name: String,
@@ -85,7 +82,7 @@ class MainActivity : ComponentActivity() {
                         navController = navController,
                         startDestination = EpisodeListNavGraph.episodeListRoute
                     ) {
-                        episodeListNavGraph(viewModel, navController)
+                        episodeListNavGraph(navController)
                         episodeDetailNavGraph()
                         favoriteNavGraph(navController)
                         settingNavGraph(navController)
