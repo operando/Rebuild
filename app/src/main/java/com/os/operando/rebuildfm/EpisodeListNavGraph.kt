@@ -9,7 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -58,11 +60,11 @@ fun EpisodeList(viewModel: MainViewModel, navController: NavHostController) {
                     .wrapContentSize()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text(text = episode.title)
+                    Text(text = episode.title, fontWeight = FontWeight.Bold, fontSize = 20.sp)
                     Spacer(modifier = Modifier.heightIn(8.dp))
-                    Text(text = episode.itunes?.subtitle ?: "")
-                    Spacer(modifier = Modifier.heightIn(4.dp))
-                    Text(text = episode.pubDate.toString())
+                    Text(text = episode.itunes?.subtitle ?: "", color = Color.DarkGray)
+//                    Spacer(modifier = Modifier.heightIn(4.dp))
+//                    Text(text = episode.pubDate.toString())
                 }
             }
         }
