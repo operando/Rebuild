@@ -10,6 +10,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -28,7 +29,7 @@ fun NavGraphBuilder.episodeDetailNavGraph() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EpisodeDetail(viewModel: EpisodeDetailViewModel = hiltViewModel()) {
-    viewModel.getEpisode()
+    viewModel.getEpisode(LocalContext.current)
     val episode = viewModel.episode.observeAsState().value
     Scaffold(
         topBar = {
