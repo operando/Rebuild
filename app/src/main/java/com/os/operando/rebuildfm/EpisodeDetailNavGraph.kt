@@ -39,6 +39,14 @@ fun EpisodeDetail(viewModel: EpisodeDetailViewModel = hiltViewModel()) {
     if (audio != null) {
         initPlayer(LocalContext.current, buildMediaSource(LocalContext.current, audio))
     }
+    val chapters = viewModel.chapters.observeAsState().value
+    if (chapters != null) {
+        for (chapter in chapters) {
+            println("Chapter title: ${chapter.id}")
+            println("Start time: ${chapter.startTime}")
+            println("End time: ${chapter.endTime}")
+        }
+    }
     Scaffold(
         topBar = {
             TopAppBar(
