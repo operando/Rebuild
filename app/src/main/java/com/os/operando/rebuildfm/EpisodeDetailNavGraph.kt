@@ -48,10 +48,10 @@ fun EpisodeDetail(viewModel: EpisodeDetailViewModel = hiltViewModel()) {
     ) {
         Column(modifier = Modifier.padding(it)) {
             Text(text = episode?.itunes?.subtitle ?: "")
-            Button(onClick = {
+            Button(enabled = audio != null, onClick = {
                 audioPlayer?.playWhenReady = true
             }) {
-                Text(text = "Click")
+                Text(text = "再生")
             }
         }
 
