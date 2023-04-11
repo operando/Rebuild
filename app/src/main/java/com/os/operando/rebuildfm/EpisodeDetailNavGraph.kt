@@ -61,6 +61,11 @@ fun EpisodeDetail(viewModel: EpisodeDetailViewModel = hiltViewModel()) {
             }) {
                 Text(text = "再生")
             }
+            Button(enabled = audio != null, onClick = {
+                audioPlayer?.playWhenReady = false
+            }) {
+                Text(text = "停止")
+            }
         }
 
     }
