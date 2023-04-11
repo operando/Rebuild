@@ -66,6 +66,11 @@ fun EpisodeDetail(viewModel: EpisodeDetailViewModel = hiltViewModel()) {
             }) {
                 Text(text = "停止")
             }
+            Button(enabled = audio != null, onClick = {
+                audioPlayer?.setPlaybackSpeed(2.0f)
+            }) {
+                Text(text = "2倍速")
+            }
         }
 
     }
