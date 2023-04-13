@@ -27,6 +27,8 @@ class EpisodeDetailViewModel @Inject constructor(
     private var episodeId: String = ""
     private val _chapters = MutableLiveData<List<ID3v2ChapterFrameData>?>()
     val chapters: LiveData<List<ID3v2ChapterFrameData>?> = _chapters
+    private val _guests = MutableLiveData<List<String>>()
+    val guests: LiveData<List<String>> = _guests
 
     init {
         savedStateHandle.get<String>("episodeId")?.let {
@@ -38,6 +40,9 @@ class EpisodeDetailViewModel @Inject constructor(
         viewModelScope.launch {
             val episode = rssFeedRepository.getEpisode(episodeId)
             _episode.postValue(episode)
+
+            _guests.postValue(episode?.atom?.contributors?.filter { it.name != "miyagawa" }
+                ?.map { it.name })
 
             val file = File(context.cacheDir, "$episodeId.mp3")
             if (file.exists()) {

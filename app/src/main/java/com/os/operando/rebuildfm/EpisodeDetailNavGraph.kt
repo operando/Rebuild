@@ -2,13 +2,20 @@ package com.os.operando.rebuildfm
 
 import android.content.Context
 import android.net.Uri
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -47,6 +54,7 @@ fun EpisodeDetail(viewModel: EpisodeDetailViewModel = hiltViewModel()) {
             println("End time: ${chapter.endTime}")
         }
     }
+    val guests = viewModel.guests.observeAsState().value
     Scaffold(
         topBar = {
             TopAppBar(
@@ -71,8 +79,24 @@ fun EpisodeDetail(viewModel: EpisodeDetailViewModel = hiltViewModel()) {
             }) {
                 Text(text = "2倍速")
             }
+            Text(text = "ゲスト", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                guests?.map { it ->
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .size(80.dp)
+                            .clip(CircleShape)
+                            .background(Color(0xFFF1E9E9))
+                    ) {
+                        Text(
+                            text = it,
+                            fontWeight = FontWeight.Bold,
+                        )
+                    }
+                }
+            }
         }
-
     }
 }
 
