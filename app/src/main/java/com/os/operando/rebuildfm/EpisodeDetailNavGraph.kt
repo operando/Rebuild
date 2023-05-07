@@ -3,8 +3,11 @@ package com.os.operando.rebuildfm
 import android.content.Context
 import android.net.Uri
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
@@ -26,7 +29,10 @@ import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.upstream.DefaultDataSource
+import com.google.android.exoplayer2.util.EventLogger
+import org.jsoup.Jsoup
 import java.io.File
+
 
 fun NavGraphBuilder.episodeDetailNavGraph() {
     composable(
@@ -42,6 +48,7 @@ fun NavGraphBuilder.episodeDetailNavGraph() {
 fun EpisodeDetail(viewModel: EpisodeDetailViewModel = hiltViewModel()) {
     viewModel.getEpisode(LocalContext.current)
     val episode = viewModel.episode.observeAsState().value
+    val doc = Jsoup.parse(episode?.description ?: "")
     val audio = viewModel.audio.observeAsState().value
     if (audio != null) {
         initPlayer(LocalContext.current, buildMediaSource(LocalContext.current, audio))
@@ -62,8 +69,13 @@ fun EpisodeDetail(viewModel: EpisodeDetailViewModel = hiltViewModel()) {
             )
         }
     ) {
-        Column(modifier = Modifier.padding(it)) {
+        Column(modifier = Modifier.padding(it).verticalScroll(rememberScrollState())) {
             Text(text = episode?.itunes?.subtitle ?: "")
+            doc.getElementsByTag("a").map { it ->
+                Text(text = it.text(), modifier = Modifier.clickable {
+                    println(it.attr("href"))
+                })
+            }
             Button(enabled = audio != null, onClick = {
                 audioPlayer?.playWhenReady = true
             }) {

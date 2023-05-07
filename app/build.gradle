@@ -69,6 +69,8 @@ dependencies {
 
     implementation "dev.stalla:stalla:1.1.0"
 
+    implementation 'org.jsoup:jsoup:1.16.1'
+
     implementation "com.google.dagger:hilt-android:2.44"
     kapt "com.google.dagger:hilt-compiler:2.44"
 
