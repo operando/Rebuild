@@ -2,6 +2,7 @@ package com.os.operando.rebuildfm
 
 import android.content.Context
 import android.net.Uri
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -29,7 +30,6 @@ import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.upstream.DefaultDataSource
-import com.google.android.exoplayer2.util.EventLogger
 import org.jsoup.Jsoup
 import java.io.File
 
@@ -46,12 +46,13 @@ fun NavGraphBuilder.episodeDetailNavGraph() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EpisodeDetail(viewModel: EpisodeDetailViewModel = hiltViewModel()) {
-    viewModel.getEpisode(LocalContext.current)
+    val context = LocalContext.current
+    viewModel.getEpisode(context)
     val episode = viewModel.episode.observeAsState().value
     val doc = Jsoup.parse(episode?.description ?: "")
     val audio = viewModel.audio.observeAsState().value
     if (audio != null) {
-        initPlayer(LocalContext.current, buildMediaSource(LocalContext.current, audio))
+        initPlayer(context, buildMediaSource(context, audio))
     }
     val chapters = viewModel.chapters.observeAsState().value
     if (chapters != null) {
@@ -69,11 +70,19 @@ fun EpisodeDetail(viewModel: EpisodeDetailViewModel = hiltViewModel()) {
             )
         }
     ) {
-        Column(modifier = Modifier.padding(it).verticalScroll(rememberScrollState())) {
+        Column(
+            modifier = Modifier
+                .padding(it)
+                .verticalScroll(rememberScrollState())
+        ) {
             Text(text = episode?.itunes?.subtitle ?: "")
             doc.getElementsByTag("a").map { it ->
                 Text(text = it.text(), modifier = Modifier.clickable {
-                    println(it.attr("href"))
+                    val url = it.attr("href")
+                    val intent = CustomTabsIntent.Builder()
+                        .build()
+                    intent.launchUrl(context, Uri.parse(url))
+                    println(url)
                 })
             }
             Button(enabled = audio != null, onClick = {
